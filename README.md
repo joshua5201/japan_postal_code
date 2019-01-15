@@ -1,5 +1,9 @@
 # JapanPostalCode
 
+I am trying to make the common "Postal code to part of address" feature in Japanese website.
+
+So this program will remove meta info like "その他" or "次のビルを除く" ... etc
+
 ## Installation
 
 Add this line to your `Gemfile`
