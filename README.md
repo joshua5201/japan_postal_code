@@ -1,5 +1,13 @@
 # JapanPostalCode
 
+## Installation
+
+Add this line to your `Gemfile`
+
+``` ruby
+gem "japan_postal_code", github: "joshua5201/japan_postal_code"
+```
+
 ## Usage
 
 Please download csv file from [Japan Post's Website](https://www.post.japanpost.jp/zipcode/dl/kogaki-zip.html)

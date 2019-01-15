@@ -8,7 +8,8 @@ module JapanPostalCode
       @config = config
       @mode = config[:mode] || "csv"
       if @mode == "csv"
-        @source = CsvSource.new(config[:filename], config[:encoding])
+        encoding = config[:encoding] || "Shift_JIS"
+        @source = CsvSource.new(config[:filename], encoding)
       end
     end
 

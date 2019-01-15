@@ -2,11 +2,12 @@ require_relative "postal_area"
 require 'csv'
 module JapanPostalCode
   class CsvSource
-    def initialize(filename, encoding = "UTF-8")
+    def initialize(filename, encoding)
       @data = {}
       @csv = CSV.open(filename, "r", encoding: encoding)
+      @encoding = encoding
       @csv.each do |row|
-        if encoding == "UTF-8"
+        if @encoding == "UTF-8"
           area = PostalArea.new(row)
         else
           area = PostalArea.new(row.map {|c| c.encode(Encoding::UTF_8)})
