@@ -35,6 +35,10 @@ finder.query("0380211")
 4. Export only desired parts (e.g. by prefecture/city/area) 
 5. Query with database
 
+## Problem
+
+I have trouble processing postal codes of 京都市 (Kyoto City).....
+
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
