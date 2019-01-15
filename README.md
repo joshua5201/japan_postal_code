@@ -25,8 +25,11 @@ finder.query("0380211")
 
 ## Plan
 
-1. Save csv to database (MySQL, PostgreSQL...etc)
-2. Query with database
+1. Export to SQL Insert statements
+2. Export diffential csv to SQL (Update data)
+3. Export to JSON
+4. Export only desired parts (e.g. by prefecture/city/area) 
+5. Query with database
 
 ## License
 
