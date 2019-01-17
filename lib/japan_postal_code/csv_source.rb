@@ -12,7 +12,7 @@ module JapanPostalCode
         else
           area = PostalArea.new(row.map {|c| c.encode(Encoding::UTF_8)})
         end
-        if area.multiple_area?
+        if area.has_multiple_block?
           if @data[area.code].nil?
             @data[area.code] = []
           end

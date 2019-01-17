@@ -1,45 +1,43 @@
 module JapanPostalCode
   class PostalArea
-    attr_reader :code, :prefecture, :city, :area, :prefecture_kana, :city_kana, :area_kana
+    ATTRS = %w{jis_area_code old_code code prefecture_kana city_kana area_kana prefecture city area}.freeze
+    FLAGS = %w{has_multiple_code has_koaza has_block_number has_multiple_block}.freeze
+    UPDATE_METADATA = %w{update_flag update_reason}.freeze
+
+    (ATTRS + FLAGS + UPDATE_METADATA).each do |attr|
+      attr_reader attr.to_sym
+    end
+    FLAGS.each do |flag|
+      define_method(flag + "?") do 
+        return send(flag)
+      end
+    end
+
     AREA_TO_REMOVE = ["以下に掲載がない場合", "（地階・階層不明）", "（次のビルを除く）"].freeze
     AREA_KANA_TO_REMOVE = ["ｲｶﾆｹｲｻｲｶﾞﾅｲﾊﾞｱｲ", "(ﾁｶｲ･ｶｲｿｳﾌﾒｲ)", "(ﾂｷﾞﾉﾋﾞﾙｦﾉｿﾞｸ)"].freeze
     AREA_GSUB_REGEX = Regexp.new(AREA_TO_REMOVE.join("|"))
     AREA_KANA_GSUB_REGEX = Regexp.new(AREA_KANA_TO_REMOVE.join("|"))
 
-    def initialize(attributes)
-      if attributes.is_a? Array
-        @code = attributes[2]
-        @prefecture = attributes[6]
-        @city = attributes[7]
-        @prefecture_kana = attributes[3]
-        @city_kana = attributes[4]
-        @multiple_code = attributes[9] == "1"
-        @has_area_number = attributes[11] == "1"
-        @multiple_area = attributes[12] == "1"
-        @area = attributes[8]
-        @area_kana = attributes[5]
+    def initialize(record)
+      if record.is_a? Array
+        record.first(9).zip(ATTRS).each do |col, attr|
+          instance_variable_set("@" + attr, col)
+        end
+        record.slice(9, 4).zip(FLAGS).each do |col, attr|
+          instance_variable_set("@" + attr, (col == "1"))
+        end
       elsif attributes.is_a? Hash
+        # for database source
       end
-      if multiple_code?
-        remove_bracket = /（.*）/
-        @area = @area.gsub(remove_bracket, "")
-        @area_kana = @area.gsub(remove_bracket, "")
+
+      if has_multiple_code?
+        remove_parenthesis = /（.*）/
+        @area = @area.gsub(remove_parenthesis, "")
+        @area_kana = @area_kana.gsub(remove_parenthesis, "")
       else
         @area = @area.gsub(AREA_GSUB_REGEX, "")
-        @area_kana = @area.gsub(AREA_KANA_GSUB_REGEX, "")
+        @area_kana = @area_kana.gsub(AREA_KANA_GSUB_REGEX, "")
       end
-    end
-
-    def multiple_area?
-      @multiple_area 
-    end
-
-    def multiple_code?
-      @multiple_code
-    end
-
-    def has_area_number?
-      @has_area_number
     end
 
     def to_s
