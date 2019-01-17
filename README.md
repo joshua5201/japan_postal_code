@@ -4,6 +4,8 @@ I am trying to make the common "Postal code to part of address" feature in Japan
 
 So this program will remove meta info like "その他" or "次のビルを除く" ... etc
 
+This is a hobby project and still in development
+
 ## Installation
 
 Add this line to your `Gemfile`
@@ -35,10 +37,6 @@ finder.query("0380211")
 3. Export to JSON
 4. Export only desired parts (e.g. by prefecture/city/area) 
 5. Query with database
-
-## Problem
-
-I have trouble processing postal codes of 京都市 (Kyoto City).....
 
 ## License
 
