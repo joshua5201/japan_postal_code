@@ -20,10 +20,11 @@ example:
 
 ```ruby
 require 'japan_postal_code'
-finder = JapanPostalCode::AddressFinder(filename: "02AOMORI.CSV")
-finder.query("0380211")
+finder = JapanPostalCode::AddressFinder(filename: "data/02AOMORI.CSV")
+ => #<JapanPostalCode::AddressFinder mode: csv, config: {:filename=>"data/02AOMORI.CSV"}>
 
- => #<JapanPostalCode::PostalArea:0x000055e9dd0821c8 @code="0380211", @prefecture="青森県", @city="南津軽郡大鰐町", @prefecture_kana="ｱｵﾓﾘｹﾝ", @city_kana="ﾐﾅﾐﾂｶﾞﾙｸﾞﾝｵｵﾜﾆﾏﾁ", @multiple_code=false, @has_area_number=false, @multiple_area=false, @area="大鰐", @area_kana="大鰐">
+finder.query("0380211")
+ => #<JapanPostalCode::PostalArea:0x00005640b5152ad8 @jis_area_code="02362", @old_code="03802", @code="0380211", @prefecture_kana="ｱｵﾓﾘｹﾝ", @city_kana="ﾐﾅﾐﾂｶﾞﾙｸﾞﾝｵｵﾜﾆﾏﾁ", @area_kana="ｵｵﾜﾆ", @prefecture="青森県", @city="南津軽郡大鰐町", @area="大鰐", @has_multiple_code=false, @has_koaza=true, @has_block_number=false, @has_multiple_block=false>
 
 ```
 
