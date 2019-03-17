@@ -2,6 +2,7 @@ require_relative "postal_area"
 require 'csv'
 module JapanPostalCode
   class CsvSource
+    attr_reader :data
     def initialize(filename, encoding)
       @data = {}
       @csv = CSV.open(filename, "r", encoding: encoding)

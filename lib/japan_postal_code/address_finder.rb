@@ -20,5 +20,9 @@ module JapanPostalCode
     def inspect
       "#<JapanPostalCode::AddressFinder mode: #{@mode}, config: #{@config}>"
     end
+
+    def dump
+      @source.data
+    end
   end
 end
