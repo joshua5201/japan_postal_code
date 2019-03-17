@@ -18,7 +18,7 @@ module JapanPostalCode
     AREA_GSUB_REGEX = Regexp.new(AREA_TO_REMOVE.join("|"))
     AREA_KANA_GSUB_REGEX = Regexp.new(AREA_KANA_TO_REMOVE.join("|"))
 
-    attr_reader :area_without_meta, :area_kana_without_meta
+    attr_reader :area_without_meta, :area_kana_without_meta, :raw
 
     def initialize(record)
       if record.is_a? Array
@@ -32,6 +32,7 @@ module JapanPostalCode
         # for database source
       end
       set_attr_without_meta
+      @raw = record
     end
 
     def to_s
