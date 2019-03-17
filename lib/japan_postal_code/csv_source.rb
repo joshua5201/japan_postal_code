@@ -12,11 +12,30 @@ module JapanPostalCode
         else
           area = PostalArea.new(row.map {|c| c.encode(Encoding::UTF_8)})
         end
-        if area.has_multiple_block?
-          if @data[area.code].nil?
-            @data[area.code] = []
+
+        if @data.has_key?(area.code)
+          record = @data[area.code]
+          if record.is_a?(PostalArea)
+            if record.mergeable_with?(area)
+              record.merge(area)
+              next
+            else
+              @data[area.code] = [record]
+            end
           end
-          @data[area.code] << area
+
+          merged = false
+          same_code_areas = @data[area.code]
+          same_code_areas.each do |same_code_area|
+            if same_code_area.mergeable_with?(area)
+              same_code_area.merge(area)
+              merged = true
+              break
+            end
+          end
+          unless merged
+            same_code_areas << area
+          end
         else
           @data[area.code] = area
         end

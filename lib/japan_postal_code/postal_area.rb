@@ -18,6 +18,8 @@ module JapanPostalCode
     AREA_GSUB_REGEX = Regexp.new(AREA_TO_REMOVE.join("|"))
     AREA_KANA_GSUB_REGEX = Regexp.new(AREA_KANA_TO_REMOVE.join("|"))
 
+    attr_reader :area_without_meta, :area_kana_without_meta
+
     def initialize(record)
       if record.is_a? Array
         record.first(9).zip(ATTRS).each do |col, attr|
@@ -29,15 +31,7 @@ module JapanPostalCode
       elsif attributes.is_a? Hash
         # for database source
       end
-
-      if has_multiple_code?
-        remove_parenthesis = /（.*）/
-        @area = @area.gsub(remove_parenthesis, "")
-        @area_kana = @area_kana.gsub(remove_parenthesis, "")
-      else
-        @area = @area.gsub(AREA_GSUB_REGEX, "")
-        @area_kana = @area_kana.gsub(AREA_KANA_GSUB_REGEX, "")
-      end
+      set_attr_without_meta
     end
 
     def to_s
@@ -45,7 +39,27 @@ module JapanPostalCode
     end
 
     def address
-      "#{@prefecture}#{@city}#{@area}"
+      "#{@prefecture}#{@city}#{@area_without_meta}"
+    end
+
+    def mergeable_with?(other)
+      @code == other.code && @prefecture == other.prefecture && @city == other.city && @area_kana == other.area_kana
+    end
+
+    def set_attr_without_meta
+      if has_multiple_code?
+        remove_parenthesis = /（.*）/
+        @area_without_meta = @area.gsub(remove_parenthesis, "")
+        @area_kana_without_meta = @area_kana.gsub(remove_parenthesis, "")
+      else
+        @area_without_meta = @area.gsub(AREA_GSUB_REGEX, "")
+        @area_kana_without_meta = @area_kana.gsub(AREA_KANA_GSUB_REGEX, "")
+      end
+    end
+
+    def merge(other)
+      @area += other.area
+      set_attr_without_meta
     end
   end
 end
