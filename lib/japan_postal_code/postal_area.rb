@@ -28,7 +28,7 @@ module JapanPostalCode
         record.slice(9, 4).zip(FLAGS).each do |col, attr|
           instance_variable_set("@" + attr, (col == "1"))
         end
-      elsif attributes.is_a? Hash
+      elsif record.is_a? Hash
         # for database source
       end
       set_attr_without_meta
